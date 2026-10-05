@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Lead Callback | The Brand Maniacs</title>
+<meta name="description" content="An AI caller that rings every new ad lead within 60 seconds, qualifies them in their own language, and books the visit or consultation.">
+<style>
+:root{--bg:#fafaf7;--fg:#16181d;--muted:#5d6370;--card:#fff;--line:#e6e4dc;--accent:#e4572e;--accent-fg:#fff;--soft:#fdeee8}
+@media (prefers-color-scheme:dark){:root{--bg:#121316;--fg:#f1f1ee;--muted:#a2a7b3;--card:#1b1d22;--line:#2b2e36;--accent:#ff7a52;--accent-fg:#1a0d08;--soft:#2a1d18}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header{padding:20px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-fg);padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;border:0;font-size:16px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+h1{font-size:clamp(32px,6vw,54px);line-height:1.1;letter-spacing:-.03em;margin:40px 0 16px;max-width:15em}
+h2{font-size:clamp(24px,4vw,32px);letter-spacing:-.02em;margin:0 0 8px}
+.lead{font-size:19px;color:var(--muted);max-width:36em}
+section{padding:48px 0}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted)}
+.num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--soft);color:var(--accent);font-weight:800;margin-bottom:10px}
+.pill{display:inline-block;background:var(--soft);color:var(--accent);padding:4px 12px;border-radius:99px;font-size:14px;font-weight:600}
+.langs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+form{display:grid;gap:12px;max-width:460px;margin-top:20px}
+label{font-size:14px;font-weight:600}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit}
+.check{display:flex;gap:10px;font-weight:400;font-size:14px;color:var(--muted)}
+.check input{width:auto;margin-top:5px}
+#msg{min-height:1.4em;font-weight:600}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">The Brand <span>Maniacs</span></div>
+  <a class="btn ghost" href="#demo">Try a demo</a>
+</header>
+
+<h1>Every ad lead gets a call in 60 seconds.</h1>
+<p class="lead">Leads go cold in minutes. Our AI caller rings each new Meta or Google form lead straight away, asks the right questions in their language, and books the visit or consultation for your team.</p>
+<p><a class="btn" href="#demo">Get a demo call</a></p>
+
+<section>
+  <h2>How it works</h2>
+  <div class="grid">
+    <div class="card"><div class="num">1</div><h3>Lead submits your ad form</h3><p>Meta, Google or your website form. They have asked to hear from you.</p></div>
+    <div class="card"><div class="num">2</div><h3>AI calls within 60 seconds</h3><p>It introduces itself as an AI assistant from your business and asks your qualifying questions.</p></div>
+    <div class="card"><div class="num">3</div><h3>Booking and summary</h3><p>Interested leads are booked for a visit or call. You get the transcript and a lead score.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Built for Indian callers</h2>
+  <p class="lead">Natural voices in the language your customer is comfortable with.</p>
+  <div class="langs"><span class="pill">English</span><span class="pill">Hinglish</span><span class="pill">Malayalam</span><span class="pill">Tamil</span></div>
+  <div class="grid">
+    <div class="card"><h3>Coaching and education</h3><p>Admission enquiries answered the moment they come in.</p></div>
+    <div class="card"><h3>Real estate and workspaces</h3><p>Site visits booked while the lead is still interested.</p></div>
+    <div class="card"><h3>Clinics and consultants</h3><p>Consultation slots filled, after hours too.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Responsible by design</h2>
+  <p class="lead">The AI says it is an AI at the start of every call. We only call people who submitted an enquiry, and each client runs on its own registered numbers to stay within TRAI rules.</p>
+</section>
+
+<section id="demo">
+  <h2>Get a demo call</h2>
+  <p class="lead">Tell us about your business and we will set up a short demo.</p>
+  <form id="f">
+    <div><label for="name">Your name</label><input id="name" name="name" required autocomplete="name"></div>
+    <div><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" required autocomplete="tel" placeholder="+91 98765 43210"></div>
+    <div><label for="business">Business type</label>
+      <select id="business" name="business"><option>Education</option><option>Real estate</option><option>Coworking</option><option>Clinic or consultant</option><option>Other</option></select></div>
+    <div><label for="lang">Preferred language</label>
+      <select id="lang" name="lang"><option>English</option><option>Hinglish</option><option>Malayalam</option><option>Tamil</option></select></div>
+    <label class="check"><input type="checkbox" name="consent" required> I agree to receive a call from an AI assistant at this number about this demo.</label>
+    <button class="btn" type="submit">Request demo</button>
+    <div id="msg" role="status"></div>
+  </form>
+</section>
+
+<footer>&copy; The Brand Maniacs</footer>
+</div>
+<script>
+document.getElementById('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const m=document.getElementById('msg');
+  const d=Object.fromEntries(new FormData(e.target));
+  m.textContent='Sending...';
+  try{
+    const r=await fetch('/api/lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)});
+    if(!r.ok)throw 0;
+    m.textContent='Thanks! We will be in touch shortly.';
+    e.target.reset();
+  }catch{m.textContent='Something went wrong. Please try again.'}
+});
+</script>
+</body>
+</html>
