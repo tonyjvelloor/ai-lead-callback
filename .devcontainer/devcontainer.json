@@ -1,0 +1,9 @@
+{
+  "name": "dograh-test",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
+  "hostRequirements": { "cpus": 4, "memory": "8gb" },
+  "forwardPorts": [3010],
+  "portsAttributes": { "3010": { "label": "Dograh UI", "visibility": "private" } },
+  "postCreateCommand": "mkdir -p ~/dograh && cd ~/dograh && curl -sO https://raw.githubusercontent.com/dograh-hq/dograh/main/docker-compose.yaml && curl -so start_docker.sh https://raw.githubusercontent.com/dograh-hq/dograh/main/scripts/start_docker.sh && chmod +x start_docker.sh"
+}
