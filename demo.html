@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live AI Call Demo | The Brand Maniacs</title>
+<style>
+:root{--bg:#fafaf7;--fg:#16181d;--muted:#5d6370;--card:#fff;--line:#e6e4dc;--accent:#e4572e;--accent-fg:#fff;--soft:#fdeee8}
+@media (prefers-color-scheme:dark){:root{--bg:#121316;--fg:#f1f1ee;--muted:#a2a7b3;--card:#1b1d22;--line:#2b2e36;--accent:#ff7a52;--accent-fg:#1a0d08;--soft:#2a1d18}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:16px}
+a{color:var(--accent)}
+h1{letter-spacing:-.02em;margin:12px 0 4px}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+select,button{padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit}
+button.go{background:var(--accent);color:var(--accent-fg);border:0;font-weight:700;padding:12px 22px;cursor:pointer}
+button.go.stop{background:var(--fg);color:var(--bg)}
+#log{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;min-height:240px;max-height:55vh;overflow:auto}
+.m{margin:8px 0;padding:8px 12px;border-radius:12px;max-width:85%}
+.a{background:var(--soft)}
+.u{background:var(--line);margin-left:auto}
+#status{margin-top:10px;font-weight:600;min-height:1.5em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p><a href="/">&larr; Back</a></p>
+  <h1>Live AI call demo</h1>
+  <p class="muted">Talk to the AI caller in your browser. It plays a lead-callback call for the business you pick. Use Chrome and allow the microphone. This is a demo; no real call is made.</p>
+  <div class="row">
+    <select id="biz" aria-label="Business"><option value="education">Education</option><option value="realestate">Real estate</option><option value="coworking">Coworking</option><option value="clinic">Clinic</option></select>
+    <select id="lang" aria-label="Language"><option value="en">English</option><option value="hi">Hinglish</option><option value="ml">Malayalam</option><option value="ta">Tamil</option></select>
+    <button class="go" id="btn">Start call</button>
+  </div>
+  <div id="log" aria-live="polite"></div>
+  <div id="status" role="status"></div>
+</div>
+<script>
+const L={en:'en-IN',hi:'hi-IN',ml:'ml-IN',ta:'ta-IN'};
+const log=document.getElementById('log'),st=document.getElementById('status'),btn=document.getElementById('btn');
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let msgs=[],on=false,rec=null;
+
+function add(role,text){const d=document.createElement('div');d.className='m '+(role==='agent'?'a':'u');d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
+function setSt(t){st.textContent=t}
+
+function speak(text,lang){
+  return new Promise(res=>{
+    const u=new SpeechSynthesisUtterance(text);u.lang=L[lang];
+    const v=speechSynthesis.getVoices().find(v=>v.lang.replace('_','-')===L[lang])||speechSynthesis.getVoices().find(v=>v.lang.startsWith(L[lang].slice(0,2)));
+    if(v)u.voice=v;
+    u.onend=res;u.onerror=res;speechSynthesis.cancel();speechSynthesis.speak(u);
+  });
+}
+function listen(lang){
+  return new Promise(res=>{
+    rec=new SR();rec.lang=L[lang];rec.interimResults=false;
+    rec.onresult=e=>res(e.results[0][0].transcript);
+    rec.onerror=()=>res('');rec.onend=()=>res('');
+    setSt('Listening...');rec.start();
+  });
+}
+async function turn(){
+  const lang=document.getElementById('lang').value,biz=document.getElementById('biz').value;
+  setSt('Thinking...');
+  const r=await fetch('/api/agent',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({lang,business:biz,messages:msgs})});
+  if(!r.ok){setSt(r.status===503?'The demo agent is not switched on yet.':'Something went wrong.');stop();return}
+  const {text,end}=await r.json();
+  msgs.push({role:'agent',text});add('agent',text);
+  setSt('Speaking...');await speak(text,lang);
+  if(end||!on){stop();return}
+  const heard=await listen(lang);
+  if(!on)return;
+  if(!heard){setSt('Did not catch that. Say something or end the call.');const again=await listen(lang);if(!again){stop();return}msgs.push({role:'user',text:again});add('user',again)}
+  else{msgs.push({role:'user',text:heard});add('user',heard)}
+  if(on)turn();
+}
+function stop(){on=false;try{rec&&rec.abort()}catch{}speechSynthesis.cancel();btn.textContent='Start call';btn.classList.remove('stop');if(!st.textContent.startsWith('The demo')&&!st.textContent.startsWith('Something'))setSt('Call ended.')}
+btn.onclick=()=>{
+  if(on){stop();return}
+  if(!SR){setSt('Voice input needs Chrome or Edge.');return}
+  msgs=[];log.innerHTML='';on=true;btn.textContent='End call';btn.classList.add('stop');turn();
+};
+speechSynthesis.getVoices();
+</script>
+</body>
+</html>
