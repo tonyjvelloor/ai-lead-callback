@@ -1,7 +1,7 @@
 {
   "name": "dograh-test",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": { "moby": false } },
   "hostRequirements": { "cpus": 4, "memory": "8gb" },
   "forwardPorts": [3010],
   "portsAttributes": { "3010": { "label": "Dograh UI", "visibility": "private" } },
